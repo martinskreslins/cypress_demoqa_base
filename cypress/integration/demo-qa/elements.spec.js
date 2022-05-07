@@ -4,6 +4,7 @@ import RadioButtonsPage from "../../pageObjects/RadioButtonsPage";
 import WebTablePage from "../../pageObjects/WebTablePage";
 import ButtonPage from "../../pageObjects/ButtonPage";
 import LinksPage from "../../pageObjects/LinksPage";
+import SelectablePage from "../../pageObjects/SelectablePage";
 
 
 context("Elements Page", () => {
@@ -149,9 +150,75 @@ context("LinksPage thing", () => {
   beforeEach(() => {
     LinksPage.visit();
   });
-  it.only("API intercepting", () => {
+  it("API intercepting", () => {
     cy.intercept("GET", "created", {statuscode: 400});
     LinksPage.createdLink.click();
     LinksPage.linkResponse.should("contain", "200");
+  });
+});
+////
+//// HOMEWORK STARTS HERE AND ON pageObjects/SelectablePage.js
+///
+context("Homework Selectable", () => {
+  beforeEach(() => {
+    SelectablePage.visit();
+  });
+  it.only("Selecting list element test", () => {
+    //Noklikot uz laukiem “Cras justo odio” un “Morbi leo risus”.
+    SelectablePage.getSelectable.contains("Cras justo odio").click();
+    SelectablePage.getSelectable.contains("Morbi leo risus").click();
+    //Novalidēt, ka noklikotie lauki ir aktīvi. (.invoke('class')).
+    SelectablePage.getSelectable.contains("Cras justo odio")
+      .invoke('attr', 'class')
+      .should('equal', 'mt-2 list-group-item active list-group-item-action');
+      SelectablePage.getSelectable.contains("Morbi leo risus")
+      .invoke('attr', 'class')
+      .should('equal', 'mt-2 list-group-item active list-group-item-action');
+    //Novalidēt, ka pārējie lauki nav mainījuši stāvokli.
+    SelectablePage.getSelectable.contains("Dapibus ac facilisis in")
+      .invoke('attr', 'class')
+      .should('equal', 'mt-2 list-group-item list-group-item-action');
+      SelectablePage.getSelectable.contains("Porta ac consectetur ac")
+      .invoke('attr', 'class')
+      .should('equal', 'mt-2 list-group-item list-group-item-action');
+  });
+  it.only("Selecting grid element test", () => {
+    //Atvērt sadaļu “Grid”.
+    SelectablePage.goToGrid.click();
+    //Noklikot laukus “Two”, “Four”, “Six” un “Eight”.
+    SelectablePage.selectGrid.contains("Two").click();
+    SelectablePage.selectGrid.contains("Four").click();
+    SelectablePage.selectGrid.contains("Six").click();
+    SelectablePage.selectGrid.contains("Eight").click();
+    //Novalidēt, ka lauki “Two”, “Four”, “Six” un “Eight” ir aktīvi (.invoke('class')).
+    SelectablePage.selectGrid.contains("Two")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item active list-group-item-action');
+    SelectablePage.selectGrid.contains("Four")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item active list-group-item-action');
+    SelectablePage.selectGrid.contains("Six")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item active list-group-item-action');
+    SelectablePage.selectGrid.contains("Eight")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item active list-group-item-action');
+    //Novalidēt, ka pārējie lauki nav mainījuši stāvokli.
+    SelectablePage.selectGrid.contains("One")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item list-group-item-action');
+    SelectablePage.selectGrid.contains("Three")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item list-group-item-action');
+    SelectablePage.selectGrid.contains("Five")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item list-group-item-action');
+    SelectablePage.selectGrid.contains("Seven")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item list-group-item-action');
+    SelectablePage.selectGrid.contains("Nine")
+      .invoke('attr', 'class')
+      .should('equal', 'list-group-item list-group-item-action');
+    
   });
 });
